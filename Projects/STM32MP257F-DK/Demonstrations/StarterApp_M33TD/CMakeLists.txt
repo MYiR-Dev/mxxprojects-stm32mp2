@@ -43,6 +43,18 @@ else()
 	add_definitions(-DREALTIME_DEBUG_LOG_ENABLED=0)
 endif()
 
+# === M33 Demo Peripheral Control ===
+# When ON, disables all demo peripherals (LED3, BUTTON_USER2, UART5 debug, LVDS)
+# to avoid resource conflicts with A35. Only M33 minimal boot is preserved.
+option(DISABLE_M33_DEMO_PERIPHERALS "Disable all M33 demo peripherals" ON)
+
+if(DISABLE_M33_DEMO_PERIPHERALS)
+	add_definitions(-DDISABLE_M33_DEMO_PERIPHERALS)
+	message("  M33 Demo Peripherals: DISABLED (minimal boot)")
+else()
+	message("  M33 Demo Peripherals: ENABLED (full demo)")
+endif()
+
 # Define options for FaultMgr feature toggles
 option(FAULT_EXCEPTION_ENABLE "Enable Fault Exception Handler (FAULT_EXCEPTION_ENABLE macro)" ON)
 option(FAULT_EXCEPTION_BACKTRACE_ENABLE "Enable FaultMgr backtrace (FAULT_EXCEPTION_BACKTRACE_ENABLE macro)" ON)
