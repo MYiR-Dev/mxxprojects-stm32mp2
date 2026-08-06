@@ -367,11 +367,18 @@ void MX_LVDS_Init(void)
   */
 void Error_Handler(void)
 {
+#if !defined(DISABLE_M33_DEMO_PERIPHERALS)
   while(1)
   {
     BSP_LED_Toggle(LED3);
     HAL_Delay(100);
   }
+#else
+  /* M33 minimal boot mode: no peripherals, just spin */
+  while(1)
+  {
+  }
+#endif
 }
 
 #ifdef  USE_FULL_ASSERT

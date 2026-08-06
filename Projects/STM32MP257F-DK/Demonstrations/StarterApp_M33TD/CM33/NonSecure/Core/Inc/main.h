@@ -35,6 +35,7 @@
 
 void Error_Handler(void);
 void SystemClock_Config(void);
+/* When DISABLE_M33_DEMO_PERIPHERALS is defined (via -D in .cproject), all demo * peripherals (LED, Button, UART5, LVDS/LTDC) are disabled to avoid resource * conflicts with A35. Remove the define to re-enable the full starter demo. */
 #if defined(DISPLAY_PANEL_ENABLED)
 void MX_LVDS_Init(void);
 void MX_LTDC_Init(LTDC_ColorTypeDef Color, uint32_t format);

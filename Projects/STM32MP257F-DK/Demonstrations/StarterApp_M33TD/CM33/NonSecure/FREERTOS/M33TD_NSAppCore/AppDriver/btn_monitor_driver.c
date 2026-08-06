@@ -87,6 +87,7 @@ static void BtnMonitorDriver_ExtiRisingCb(void)
   */
 static int BtnMonitorDriver_Init(BtnMonitorDriver_IRQCallback cb, void *context)
 {
+#if !defined(DISABLE_M33_DEMO_PERIPHERALS)
   GPIO_InitTypeDef GPIO_InitStruct;
   EXTI_ConfigTypeDef EXTI_ConfigStructure;
 
@@ -151,6 +152,11 @@ static int BtnMonitorDriver_DeInit(void)
   BtnMonitor_IRQCallback = NULL;
   BtnMonitor_IRQCallbackContext = NULL;
   return 0;
+#else
+  (void)cb;
+  (void)context;
+  return 0;
+#endif
 }
 
 /**

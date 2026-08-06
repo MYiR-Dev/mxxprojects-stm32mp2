@@ -51,7 +51,11 @@ LedDriverTypeDef led_driver =
     */
 static void LedDriver_Init(void)
 {
+#if !defined(DISABLE_M33_DEMO_PERIPHERALS)
     BSP_LED_Init(LED3); /* Add more as needed for your board */
+#else
+    /* M33 minimal boot: LED driver disabled */
+#endif
 }
 
 

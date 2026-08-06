@@ -74,13 +74,20 @@
  * These tasks default to disabled in app_tasks_config.h.
  * Uncomment if your project requires them.
  */
+ #if !defined(DISABLE_M33_DEMO_PERIPHERALS)
  #define ENABLE_USERAPP_TASK         1
  #define ENABLE_BTN_MONITOR_TASK     1
  #define ENABLE_OPENAMP_TASK         1
+ #else
+ /* M33 minimal boot: demo tasks disabled */
+ #undef ENABLE_USERAPP_TASK
+ #undef ENABLE_BTN_MONITOR_TASK
+ #undef ENABLE_OPENAMP_TASK
+#endif
 
 /* If the project enables a display panel, automatically enable Display Task.
  */
-#if defined(DISPLAY_PANEL_ENABLED)
+#if defined(DISPLAY_PANEL_ENABLED) && !defined(DISABLE_M33_DEMO_PERIPHERALS)
 #define ENABLE_DISPLAY_TASK 1
 #endif
 
