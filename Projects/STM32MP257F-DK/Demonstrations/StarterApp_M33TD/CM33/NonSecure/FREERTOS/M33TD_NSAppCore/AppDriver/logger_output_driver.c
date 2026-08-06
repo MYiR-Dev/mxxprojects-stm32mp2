@@ -34,8 +34,8 @@ COM_InitTypeDef COM_Init;
   * @retval None
   */
 void logger_output_init(void) {
-#if !defined(DISABLE_M33_DEMO_PERIPHERALS)
-  /* Initialize Uart For Logging*/
+  /* UART5 is M33 debug/log infrastructure, NOT a demo peripheral.
+   * It must always be initialized regardless of DISABLE_M33_DEMO_PERIPHERALS. */
   if (ResMgr_Request(RESMGR_RESOURCE_RIFSC, RESMGR_RIFSC_UART5_ID) == RESMGR_STATUS_ACCESS_OK)
   {
     COM_Init.BaudRate = 115200;
@@ -47,9 +47,6 @@ void logger_output_init(void) {
     BSP_COM_Init(COM_VCP_CM33, &COM_Init);
     BSP_COM_SelectLogPort(COM_VCP_CM33);
   }
-#else
-  /* M33 minimal boot: UART5 disabled to avoid conflict with A35 */
-#endif
 }
 
 /**
