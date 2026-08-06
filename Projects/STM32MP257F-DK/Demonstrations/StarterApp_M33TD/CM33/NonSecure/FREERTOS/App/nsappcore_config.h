@@ -78,11 +78,10 @@
  #define ENABLE_USERAPP_TASK         1
  #define ENABLE_BTN_MONITOR_TASK     1
  #define ENABLE_OPENAMP_TASK         1
- #else
- /* M33 minimal boot: demo tasks disabled */
- #define ENABLE_USERAPP_TASK         0
- #define ENABLE_BTN_MONITOR_TASK     0
- #define ENABLE_OPENAMP_TASK         0
+#else
+ /* M33 minimal boot: demo peripherals disabled.
+  * OpenAMP is a core M33 function (not a demo peripheral), keep it enabled. */
+ #define ENABLE_OPENAMP_TASK         1
 #endif
 
 /* If the project enables a display panel, automatically enable Display Task.
@@ -92,6 +91,14 @@
 #endif
 
 #include "app_tasks_config.h"
+
+/* When M33 demo peripherals are disabled, undefine demo task enables after
+ * app_tasks_config.h so that #if defined() checks evaluate to false. */
+#if defined(DISABLE_M33_DEMO_PERIPHERALS)
+#undef ENABLE_USERAPP_TASK
+#undef ENABLE_BTN_MONITOR_TASK
+#undef ENABLE_DISPLAY_TASK
+#endif
 
 /* ---------------------------------------------------------------------------
  * Display Stack Dependency
