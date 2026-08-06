@@ -146,8 +146,8 @@ set(CMSIS_SRC_FILES ${CMSIS_SRC_FILES}
 						${BASE_DIR}/../../../../Drivers/CMSIS/Device/ST/STM32MP2xx/Source/Templates/gcc/startup_stm32mp257cxx_m33.s
 						)
 
-# Conditionally add LTDC driver only for FULL build
-if(BUILD_CONFIG STREQUAL "FULL")
+# Conditionally add LTDC/LVDS drivers only for FULL build and when demo peripherals enabled
+if(BUILD_CONFIG STREQUAL "FULL" AND NOT DISABLE_M33_DEMO_PERIPHERALS)
 	list(APPEND HAL_SRC_FILES
 		${BASE_DIR}/../../../../Drivers/STM32MP2xx_HAL_Driver/Src/stm32mp2xx_hal_ltdc.c
 		${BASE_DIR}/Drivers/Src/stm32mp2xx_hal_lvds.c
@@ -187,7 +187,8 @@ set(APPLICATION_SRC
 set(S_VEENER_OBJECT_FILE ${TFM_BUILD_DIR}/api_ns/interface/lib/s_veneers.o)
 
 # By default, always define DISPLAY_PANEL_ENABLED and include display files (FULL build)
-if(BUILD_CONFIG STREQUAL "FULL")
+# When DISABLE_M33_DEMO_PERIPHERALS is ON, skip ALL display code to avoid A35 conflicts
+if(BUILD_CONFIG STREQUAL "FULL" AND NOT DISABLE_M33_DEMO_PERIPHERALS)
 	add_definitions(-DDISPLAY_PANEL_ENABLED=1)
 	list(APPEND APPLICATION_SRC ${DISPLAY_PANEL_FILES})
 	add_definitions(-DHAL_LVDS_MODULE_ENABLED)
@@ -201,7 +202,8 @@ if(BUILD_CONFIG STREQUAL "FULL")
 	endif()
 	# If STATIC, do not define SPLASH_ANIMATION_ENABLED
 else()
-	# MINIMUM build: do not define DISPLAY_PANEL_ENABLED, do not include display files
+	# MINIMUM build or demo peripherals disabled:
+	# do not define DISPLAY_PANEL_ENABLED, do not include display files
 	# (No add_definitions for DISPLAY_PANEL_ENABLED)
 	# (No display files in APPLICATION_SRC)
 endif()
