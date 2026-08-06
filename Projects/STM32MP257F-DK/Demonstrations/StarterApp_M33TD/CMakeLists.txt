@@ -124,6 +124,19 @@ include(${BASE_DIR}/cmake/freertos_sources.cmake)
 #include NSAppCore sources
 include(${BASE_DIR}/cmake/nsappcore_sources.cmake)
 
+# When M33 demo peripherals are disabled, exclude demo-specific task sources
+# (OpenAMP/Display/Button/UserApp tasks are not needed for minimal boot)
+if(DISABLE_M33_DEMO_PERIPHERALS)
+	message("  Excluding demo task sources (OpenAMP/Display/Button/UserApp)")
+	list(REMOVE_ITEM NSAPPCORE_SRC_FILES
+		${BASE_DIR}/../../../../Utilities/M33TD_NSAppCore/App/Src/display_task.c
+		${BASE_DIR}/../../../../Utilities/M33TD_NSAppCore/App/Src/openamp_task.c
+		${BASE_DIR}/../../../../Utilities/M33TD_NSAppCore/App/Src/btn_monitor_task.c
+		${BASE_DIR}/../../../../Utilities/M33TD_NSAppCore/App/Src/userapp_task.c
+	)
+endif()
+
+
 # Include openamp library generations
 include(${BASE_DIR}/cmake/openamp_freertos.cmake)
 

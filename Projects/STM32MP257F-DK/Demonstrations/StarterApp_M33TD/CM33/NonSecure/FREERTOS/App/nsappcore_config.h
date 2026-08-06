@@ -80,9 +80,9 @@
  #define ENABLE_OPENAMP_TASK         1
  #else
  /* M33 minimal boot: demo tasks disabled */
- #undef ENABLE_USERAPP_TASK
- #undef ENABLE_BTN_MONITOR_TASK
- #undef ENABLE_OPENAMP_TASK
+ #define ENABLE_USERAPP_TASK         0
+ #define ENABLE_BTN_MONITOR_TASK     0
+ #define ENABLE_OPENAMP_TASK         0
 #endif
 
 /* If the project enables a display panel, automatically enable Display Task.
