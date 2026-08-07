@@ -9,6 +9,7 @@
 #include "cli_task.h"
 #include "main.h"
 #include "cmsis_os2.h"
+#include "FreeRTOS.h"
 #include <stdio.h>
 #include <string.h>
 #include <stdarg.h>

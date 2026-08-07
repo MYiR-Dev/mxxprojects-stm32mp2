@@ -232,6 +232,7 @@ target_compile_definitions(${PROJECT_NAME}.elf PRIVATE ${OPENAMP_DEFINITIONS})
 target_link_libraries(${PROJECT_NAME}.elf PRIVATE metal-static open_amp-static)
 
 target_include_directories(${PROJECT_NAME}.elf PRIVATE
+	${BASE_DIR}/CM33/NonSecure/FREERTOS/M33TD_NSAppCore/AppDriver
 	${BASE_DIR}/CM33/NonSecure/Core/Inc
 	${BASE_DIR}/CM33/NonSecure/FaultMgr
 	$<$<STREQUAL:${BUILD_CONFIG},FULL>:${BASE_DIR}/Drivers/Inc>
