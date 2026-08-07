@@ -176,6 +176,7 @@ set(APPLICATION_SRC
     ${NSAPPCORE_SRC_FILES}	
     ${BASE_DIR}/CM33/NonSecure/FREERTOS/M33TD_NSAppCore/AppDriver/led_driver.c
     ${BASE_DIR}/CM33/NonSecure/FREERTOS/M33TD_NSAppCore/AppDriver/logger_output_driver.c
+    ${BASE_DIR}/CM33/NonSecure/FREERTOS/M33TD_NSAppCore/AppDriver/cli_task.c
 	${BASE_DIR}/CM33/NonSecure/FREERTOS/M33TD_NSAppCore/AppDriver/remoteproc_driver.c
     ${BASE_DIR}/CM33/NonSecure/FREERTOS/M33TD_NSAppCore/AppDriver/openamp_driver.c
 	${BASE_DIR}/CM33/NonSecure/FREERTOS/M33TD_NSAppCore/AppDriver/btn_monitor_driver.c

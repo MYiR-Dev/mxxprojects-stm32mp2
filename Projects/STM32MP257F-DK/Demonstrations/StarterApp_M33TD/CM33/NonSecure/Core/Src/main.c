@@ -20,6 +20,7 @@
 #include "main.h"
 #include "stdio.h"
 #include "nscoreapp_init.h"
+#include "cli_task.h"
 /* USER CODE BEGIN Includes */
 /* Add additional includes here */
 /* USER CODE END Includes */
@@ -76,6 +77,7 @@ int main(void)
   /* USER CODE BEGIN AppInit */
   /* Initialize application tasks and modules */
   NSCoreApp_Init();
+  CLI_Task_Init();
   /* Add other task/module initializations here */
   /* e.g., MyCustomTask_Init(); */
   /* USER CODE END AppInit */
