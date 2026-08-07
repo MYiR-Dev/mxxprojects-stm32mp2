@@ -10,6 +10,7 @@
 #include "main.h"
 #include "cmsis_os2.h"
 #include "FreeRTOS.h"
+#include "task.h"
 #include <stdio.h>
 #include <string.h>
 #include <stdarg.h>
@@ -196,11 +197,10 @@ static int CLI_CmdHelp(int argc, char *argv[])
 static int CLI_CmdStatus(int argc, char *argv[])
 {
     (void)argc; (void)argv;
-    extern volatile uint32_t uwTick;
 
     CLI_Printf("\r\n=== M33 Status ===\r\n");
-    CLI_Printf("Tick       : %lu ms\r\n", (unsigned long)uwTick);
-    CLI_Printf("Tasks      : %lu\r\n", (unsigned long)osThreadGetCount());
+    CLI_Printf("Tick       : %lu ms\r\n", (unsigned long)(xTaskGetTickCount() * portTICK_PERIOD_MS));
+    CLI_Printf("Tasks      : %lu\r\n", (unsigned long)uxTaskGetNumberOfTasks());
     CLI_Printf("Free heap  : %lu\r\n", (unsigned long)xPortGetFreeHeapSize());
     CLI_Printf("Min heap   : %lu\r\n", (unsigned long)xPortGetMinimumEverFreeHeapSize());
     CLI_Printf("\r\n");
