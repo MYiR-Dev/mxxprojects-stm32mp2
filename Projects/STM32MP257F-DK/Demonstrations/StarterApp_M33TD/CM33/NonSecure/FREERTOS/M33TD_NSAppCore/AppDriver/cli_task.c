@@ -54,6 +54,7 @@ static const osThreadAttr_t CLI_TaskAttr = {
 static void CLI_TaskFunc(void *argument);
 static void CLI_ProcessLine(char *line);
 static void CLI_PrintPrompt(void);
+static int  CLI_Tokenize(char *line, char *argv[], int max_args);
 static int  CLI_CmdHelp(int argc, char *argv[]);
 static int  CLI_CmdStatus(int argc, char *argv[]);
 static int  CLI_CmdVersion(int argc, char *argv[]);
@@ -119,6 +120,7 @@ static void CLI_TaskFunc(void *argument)
             if (cli_ctx.line_pos > 0) {
                 cli_ctx.line_pos--;
                 printf("\b \b");
+                fflush(stdout);
             }
             continue;
         }
@@ -126,6 +128,7 @@ static void CLI_TaskFunc(void *argument)
         /* Enter: CR or LF */
         if (ch == '\r' || ch == '\n') {
             printf("\r\n");
+            fflush(stdout);
             cli_ctx.line_buf[cli_ctx.line_pos] = '\0';
             if (cli_ctx.line_pos > 0) {
                 CLI_ProcessLine(cli_ctx.line_buf);
@@ -142,8 +145,41 @@ static void CLI_TaskFunc(void *argument)
         if (cli_ctx.line_pos < CLI_MAX_CMD_LEN) {
             cli_ctx.line_buf[cli_ctx.line_pos++] = (char)ch;
             printf("%c", ch);
+            fflush(stdout);
         }
     }
+}
+
+/* Manual tokenizer ---------------------------------------------------------*/
+
+/**
+  * @brief  Tokenize a line into argv, replacing strtok() to avoid newlib
+  *         reentrancy malloc assertion on embedded FreeRTOS.
+  * @param  line     Null-terminated input string (modified in-place).
+  * @param  argv     Output argument vector.
+  * @param  max_args Max number of arguments.
+  * @retval Number of tokens found.
+  */
+static int CLI_Tokenize(char *line, char *argv[], int max_args)
+{
+    int   argc = 0;
+    char *p    = line;
+
+    while (*p && argc < max_args) {
+        /* Skip leading whitespace */
+        while (*p == ' ' || *p == '\t') p++;
+        if (*p == '\0') break;
+
+        argv[argc++] = p;
+
+        /* Scan to end of token */
+        while (*p && *p != ' ' && *p != '\t') p++;
+        if (*p) {
+            *p = '\0';
+            p++;
+        }
+    }
+    return argc;
 }
 
 /* Command dispatch ----------------------------------------------------------*/
@@ -151,14 +187,9 @@ static void CLI_TaskFunc(void *argument)
 static void CLI_ProcessLine(char *line)
 {
     char *argv[CLI_MAX_ARGS];
-    int   argc = 0;
+    int   argc;
 
-    char *token = strtok(line, " \t");
-    while (token && argc < CLI_MAX_ARGS) {
-        argv[argc++] = token;
-        token = strtok(NULL, " \t");
-    }
-
+    argc = CLI_Tokenize(line, argv, CLI_MAX_ARGS);
     if (argc == 0) return;
 
     for (int i = 0; i < cli_ctx.handler_count; i++) {
@@ -177,6 +208,7 @@ static void CLI_ProcessLine(char *line)
 static void CLI_PrintPrompt(void)
 {
     printf(CLI_PROMPT);
+    fflush(stdout);
 }
 
 /* Built-in commands ---------------------------------------------------------*/
